@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>SalaryTracker — Mantén tu sueldo en mente</title>
+  
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            botanical: {
+              cream: '#FAF8F5',
+              surface: '#F5F3ED',
+              card: '#FFFFFF',
+              dark: '#1C3323',
+              hunter: '#24422E',
+              forest: '#2C5237',
+              sage: '#5F7A65',
+              sageLight: '#E2EAE0',
+              sageBorder: '#CAD5C6',
+              borderLight: '#E7ECE4',
+              mint: '#86EFAC',
+              lcdBg: '#15291C',
+              lcdDigit: '#8CF59B',
+              lcdDim: '#20432E'
+            }
+          },
+          fontFamily: {
+            sans: ['Manrope', 'sans-serif'],
+            display: ['Epilogue', 'sans-serif'],
+            casio: ['"Share Tech Mono"', 'monospace'],
+            vt: ['"VT323"', 'monospace']
+          },
+          boxShadow: {
+            'botanical-sm': '0 2px 8px -2px rgba(36, 66, 46, 0.06), 0 1px 3px 0 rgba(36, 66, 46, 0.04)',
+            'botanical': '0 12px 30px -8px rgba(36, 66, 46, 0.09), 0 4px 12px -2px rgba(36, 66, 46, 0.04)',
+            'botanical-lg': '0 20px 40px -12px rgba(36, 66, 46, 0.14)',
+            'lcd': 'inset 0 3px 12px rgba(0, 0, 0, 0.6), 0 4px 14px rgba(36, 66, 46, 0.15)'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="min-h-screen relative selection:bg-[#24422E] selection:text-[#FAF8F5]">
+
+  <!-- Botanical Subtle Grid Background -->
+  <div class="fixed inset-0 pointer-events-none -z-10" style="background-image: url(&quot;data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><g fill='none' stroke='%2324422E' stroke-linecap='round' stroke-linejoin='round' opacity='0.1'><circle cx='100' cy='100' r='82' stroke-width='1' stroke-dasharray='2.5 3'/><circle cx='100' cy='100' r='76' stroke-width='1.2'/><path d='M100 28 L104 36 L113 36 L106 42 L108 50 L100 45 L92 50 L94 42 L87 36 L96 36 Z M100 150 L104 158 L113 158 L106 164 L108 172 L100 167 L92 172 L94 164 L87 158 L96 158 Z M32 94 L40 96 L42 87 L48 94 L56 92 L51 100 L56 108 L48 106 L42 113 L40 104 Z M168 94 L160 96 L158 87 L152 94 L144 92 L149 100 L144 108 L152 106 L158 113 L160 104 Z' stroke-width='0.8'/><circle cx='100' cy='100' r='66' stroke-width='0.8' stroke-dasharray='1 2'/><circle cx='100' cy='100' r='60' stroke-width='1'/><circle cx='100' cy='100' r='52' stroke-width='0.6' stroke-dasharray='3 3'/><path d='M100 48 Q100 100 152 100 Q100 100 100 152 Q100 100 48 100 Q100 100 100 48 Z' stroke-width='0.7'/><path d='M63.2 63.2 Q100 100 136.8 63.2 Q100 100 136.8 136.8 Q100 100 63.2 136.8 Q100 100 63.2 63.2 Z' stroke-width='0.7'/><circle cx='100' cy='100' r='34' stroke-width='1.2' stroke-dasharray='2 2'/><circle cx='100' cy='100' r='26' stroke-width='0.9'/><path d='M100 79 v42 M92 87 c0-6 16-6 16 0 c0 7-16 5-16 13 c0 7 16 7 16 0' stroke-width='2.2'/><circle cx='0' cy='0' r='42' stroke-width='1' stroke-dasharray='2.5 3'/><circle cx='0' cy='0' r='36' stroke-width='1'/><circle cx='0' cy='0' r='22' stroke-width='0.7' stroke-dasharray='1 2'/><circle cx='200' cy='0' r='42' stroke-width='1' stroke-dasharray='2.5 3'/><circle cx='200' cy='0' r='36' stroke-width='1'/><circle cx='200' cy='0' r='22' stroke-width='0.7' stroke-dasharray='1 2'/><circle cx='0' cy='200' r='42' stroke-width='1' stroke-dasharray='2.5 3'/><circle cx='0' cy='200' r='36' stroke-width='1'/><circle cx='0' cy='200' r='22' stroke-width='0.7' stroke-dasharray='1 2'/><circle cx='200' cy='200' r='42' stroke-width='1' stroke-dasharray='2.5 3'/><circle cx='200' cy='200' r='36' stroke-width='1'/><circle cx='200' cy='200' r='22' stroke-width='0.7' stroke-dasharray='1 2'/><path d='M100 0 v16 M0 100 h16 M200 100 h-16 M100 200 v-16' stroke-width='0.8' stroke-dasharray='2 2'/><rect x='1' y='1' width='198' height='198' stroke-width='0.5' stroke-dasharray='4 6'/></g></svg>&quot;); background-repeat: repeat; background-size: 180px 180px; opacity: 0.1;"></div>
+  
+  <div class="fixed top-[-10%] left-1/2 -translate-x-1/2 w-[760px] h-[520px] bg-[#E5EDE3]/60 blur-3xl pointer-events-none -z-10 rounded-full"></div>
+  <div class="fixed bottom-[-10%] right-[-10%] w-[640px] h-[640px] bg-[#DDE9DB]/50 blur-3xl pointer-events-none -z-10 rounded-full"></div>
+  <div class="fixed top-[45%] left-[-15%] w-[520px] h-[520px] bg-[#E9EFE7]/45 blur-3xl pointer-events-none -z-10 rounded-full"></div>
+
+
+
+  <!-- 2. HERO SECTION -->
+  <section class="max-w-7xl mx-auto px-6 pt-14 pb-20 lg:pt-20 lg:pb-28">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      <div class="lg:col-span-6 space-y-7 text-left">
+
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-display tracking-tight text-[#1C3323] leading-[1.12]">
+          Mantén tu sueldo
+          <span class="text-[#2C5237] underline decoration-[#CAD5C6] decoration-wavy decoration-2 underline-offset-8">
+            en mente.
+          </span>
+        </h1>
+        <p class="text-lg text-[#47574B] leading-relaxed max-w-xl font-normal">
+          Mira cómo crece tu dinero, segundo a segundo. Una herramienta minimalista que calcula tus ganancias en tiempo real basándose en tu sueldo. Sin suscripciones, sin servidores y con el diseño pensado para mantenerte operativo y atento a tus finanzas.
+        </p>
+        <div class="flex flex-wrap items-center gap-4 pt-1">
+          <a class="px-7 py-3.5 rounded-xl bg-[#24422E] hover:bg-[#1C3323] text-[#FAF8F5] font-bold text-base shadow-botanical hover:shadow-botanical-lg transition-all duration-300 transform hover:-translate-y-0.5 flex items-center gap-2" href="#como-utilizarlo">
+            Descubrir más
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M19 14l-7 7m0 0l-7-7m7 7V3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+            </svg>
+          </a>
+          <a
+            id="download-btn"
+            class="px-7 py-3.5 rounded-xl border border-[#CAD5C6] hover:border-[#5F7A65] bg-[#FFFFFF] text-[#24422E] hover:bg-[#E2EAE0] font-semibold text-base shadow-botanical-sm transition-all duration-300 flex items-center gap-2 cursor-pointer"
+            href="#"
+          >
+            <svg id="download-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+            </svg>
+            <span id="download-label">Descargar</span>
+          </a>
+        </div>
+        <div class="pt-2 space-y-2">
+          <a id="other-os-link" href="https://autocreativa.com/" target="_blank" rel="noopener noreferrer"
+             class="text-[11px] text-[#5F7A65] hover:text-[#24422E] font-mono transition-colors underline underline-offset-2 cursor-pointer">
+            Ver otras versiones →
+          </a>
+          <!-- OS Cards -->
+          <div class="flex gap-2 pt-1 flex-wrap">
+            <!-- macOS -->
+            <div data-os-card="mac" class="os-card flex items-center gap-2 px-3 py-2 rounded-xl border border-[#E7ECE4] bg-[#F5F3ED] opacity-50 transition-all duration-200 select-none">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+              </svg>
+              <div>
+                <div class="text-[10px] font-bold font-mono text-[#2D3A30]">macOS</div>
+                <div class="os-card-status text-[9px] font-mono text-[#5F7A65] uppercase tracking-wide">Disponible</div>
+              </div>
+            </div>
+            <!-- Windows -->
+            <div data-os-card="windows" class="os-card flex items-center gap-2 px-3 py-2 rounded-xl border border-[#E7ECE4] bg-[#F5F3ED] opacity-50 transition-all duration-200 select-none">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 88 88" fill="currentColor">
+                <polygon points="0,12.402,35.687,7.578,35.703,41.523,0.016,41.741"/>
+                <polygon points="39.996,6.952,87.314,0,87.314,41.104,40.01,41.439"/>
+                <polygon points="0.014,45.402,35.701,45.564,35.685,79.564,0,74.777"/>
+                <polygon points="40.005,45.995,87.318,46.305,87.318,87.953,40.005,82.035"/>
+              </svg>
+              <div>
+                <div class="text-[10px] font-bold font-mono text-[#2D3A30]">Windows</div>
+                <div class="os-card-status text-[9px] font-mono text-[#5F7A65] uppercase tracking-wide">Próximamente</div>
+              </div>
+            </div>
+            <!-- Linux -->
+            <div data-os-card="linux" class="os-card flex items-center gap-2 px-3 py-2 rounded-xl border border-[#E7ECE4] bg-[#F5F3ED] opacity-50 transition-all duration-200 select-none">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 1a4.5 4.5 0 0 1 4.5 4.5c0 1.66-.9 3.11-2.23 3.9L15.5 15H8.5l1.23-5.6A4.48 4.48 0 0 1 7.5 5.5 4.5 4.5 0 0 1 12 1zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zm-5 14h10l1 4H6l1-4z"/>
+              </svg>
+              <div>
+                <div class="text-[10px] font-bold font-mono text-[#2D3A30]">Linux</div>
+                <div class="os-card-status text-[9px] font-mono text-[#5F7A65] uppercase tracking-wide">Próximamente</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <!-- Right Column: Mac Widget Mockup -->
+      <div class="lg:col-span-6 flex justify-center lg:justify-end">
+        <div class="w-full max-w-md relative">
+          <div class="absolute -inset-1.5 bg-[#CAD5C6]/50 rounded-[22px] blur-md opacity-80"></div>
+          
+          <div class="relative bg-[#24422E] border-t border-x border-[#1C3323] rounded-t-2xl px-4 py-2.5 flex items-center justify-between text-xs text-[#E2EAE0] font-mono shadow-sm">
+            <div class="flex items-center gap-3">
+              <span class="text-white font-semibold"></span>
+              <span class="font-bold text-white font-display">SalaryTracker</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <div class="bg-[#15291C] border border-[#5F7A65] text-[#8CF59B] px-2 py-0.5 rounded text-[11px] font-casio flex items-center gap-1 shadow-inner">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#8CF59B] animate-ping"></span>
+                <span class="font-bold tracking-tight" id="menubar-live-counter">$ 1,450,306</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="relative bg-[#FFFFFF] border-x border-b border-[#CAD5C6] rounded-b-2xl p-6 shadow-botanical-lg">
+            <div class="flex items-center justify-between pb-4 border-b border-[#E7ECE4]">
+              <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-[#E07A5F] inline-block shadow-xs"></span>
+                <span class="w-3 h-3 rounded-full bg-[#D4A373] inline-block shadow-xs"></span>
+                <span class="w-3 h-3 rounded-full bg-[#5F7A65] inline-block shadow-xs"></span>
+              </div>
+              <span class="text-xs font-mono uppercase tracking-wider text-[#24422E] font-bold flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#2C5237]"></span> Popover Details
+              </span>
+              <div class="text-[11px] text-[#5F7A65] font-mono bg-[#F5F3ED] px-2 py-0.5 rounded border border-[#CAD5C6]">JSON Config OK</div>
+            </div>
+            
+            <div class="mt-5 space-y-5">
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-[#5F7A65] font-bold tracking-wide uppercase">Sueldo devengado</span>
+                <span class="px-2 py-0.5 rounded bg-[#E2EAE0] text-[#24422E] font-mono font-bold text-[11px] border border-[#CAD5C6]">TIEMPO REAL</span>
+              </div>
+              
+              <div class="digital-lcd p-6 rounded-xl text-center relative overflow-hidden">
+                <div class="flex justify-between items-center text-[10px] font-casio text-[#8FA590] mb-1 tracking-wider">
+                  <span class="">CASIO DIGITAL VIBE</span>
+                  <span class="">RATE: +$0.12 / SEC</span>
+                </div>
+                <div class="text-3xl sm:text-4xl lg:text-5xl font-casio font-bold text-[#1C3A27] tracking-wider absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-30">
+                  $ 8,888,888.88
+                </div>
+                <div class="relative text-3xl sm:text-4xl lg:text-[42px] font-casio font-extrabold text-[#8CF59B] tracking-wider drop-shadow-[0_0_10px_rgba(140,245,155,0.45)] py-1" id="salary-counter">$ 1,450,306.52</div>
+                <div class="mt-2 text-xs font-mono text-[#D1F2D6] flex items-center justify-center gap-2">
+                  <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#8CF59B] animate-pulse"></span>
+                  Devengando ahora mismo: <span class="font-casio text-[#8CF59B] font-bold" id="cents-ticker">+$0.124/s</span>
+                </div>
+              </div>
+              
+              <div class="space-y-2 bg-[#F5F3ED] p-3.5 rounded-xl border border-[#CAD5C6]">
+                <div class="flex justify-between text-xs font-mono">
+                  <span class="text-[#5F7A65] font-semibold">Progreso del periodo mensual</span>
+                  <span class="text-[#24422E] font-casio font-bold" id="progress-percent">64.91%</span>
+                </div>
+                <div class="w-full bg-[#E2EAE0] h-2.5 rounded-full overflow-hidden p-0.5 border border-[#CAD5C6]">
+                  <div class="h-full bg-gradient-to-r from-[#5F7A65] to-[#24422E] rounded-full transition-all duration-500 shadow-xs" id="salary-progress-bar" style="width: 64.91%;"></div>
+                </div>
+                <div class="flex justify-between text-[11px] text-[#5F7A65] font-mono pt-0.5">
+                  <span class="font-medium" id="days-remaining">Faltan 11 días</span>
+                  <span class="font-semibold text-[#24422E]" id="goal-amount">Meta: $ 2,237,500.00</span>
+                </div>
+              </div>
+              
+              <div class="grid grid-cols-2 gap-3 pt-1">
+                <div class="p-2.5 rounded-xl bg-[#F5F3ED] border border-[#CAD5C6] text-left">
+                  <div class="text-[10px] text-[#5F7A65] font-bold uppercase font-mono">Próximo Pago</div>
+                  <div class="text-sm font-casio text-[#24422E] font-bold mt-0.5">31 de Octubre</div>
+                </div>
+                <div class="p-2.5 rounded-xl bg-[#F5F3ED] border border-[#CAD5C6] text-left">
+                  <div class="text-[10px] text-[#5F7A65] font-bold uppercase font-mono">Tiempo Restante</div>
+                  <div class="text-sm font-casio text-[#24422E] font-bold mt-0.5">11d 04h 30m</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. SECCIÓN "¿PARA QUÉ SIRVE?" -->
+  <section class="max-w-7xl mx-auto px-6 py-20 border-t border-[#CAD5C6]">
+    <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+      <div class="inline-flex items-center gap-2">
+        <span class="text-xs font-mono uppercase tracking-widest text-[#24422E] font-bold px-3.5 py-1.5 rounded-full bg-[#E2EAE0] border border-[#CAD5C6]">
+          Beneficios &amp; Propósito
+        </span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold font-display text-[#1C3323] tracking-tight">
+        ¿Para qué sirve SalaryTracker?
+      </h2>
+      <p class="text-[#47574B] text-base leading-relaxed">
+        Diseñado para profesionales que valoran su esfuerzo y quieren mantener el foco y la motivación directamente en su barra de menú de macOS.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="planner-card p-8 flex flex-col justify-between shadow-botanical-sm group">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-[#E2EAE0] border border-[#CAD5C6] flex items-center justify-center text-[#24422E] mb-6 group-hover:bg-[#24422E] group-hover:text-[#FAF8F5] transition-all">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          </div>
+          <h3 class="text-xl font-bold font-display text-[#1C3323] mb-3">Motivación en Tiempo Real</h3>
+          <p class="text-[#47574B] text-sm leading-relaxed">
+            Ver tus ganancias acumularse segundo a segundo mientras programas o diseñas transforma tu percepción del valor del tiempo. Cada segundo cuenta.
+          </p>
+        </div>
+        <div class="mt-8 pt-4 border-t border-[#E7ECE4] flex items-center text-xs font-mono font-bold text-[#24422E]">
+          <span class="">+ FEEDBACK PSICOLÓGICO POSITIVO</span>
+        </div>
+      </div>
+      <div class="planner-card p-8 flex flex-col justify-between shadow-botanical-sm group">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-[#E2EAE0] border border-[#CAD5C6] flex items-center justify-center text-[#24422E] mb-6 group-hover:bg-[#24422E] group-hover:text-[#FAF8F5] transition-all">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          </div>
+          <h3 class="text-xl font-bold font-display text-[#1C3323] mb-3">100% Privado y Offline</h3>
+          <p class="text-[#47574B] text-sm leading-relaxed">
+            Tu información salarial es sagrada. SalaryTracker no usa analíticas, cookies, ni servidores de terceros. Todo el estado se deriva de un archivo local.
+          </p>
+        </div>
+        <div class="mt-8 pt-4 border-t border-[#E7ECE4] flex items-center text-xs font-mono font-bold text-[#24422E]">
+          <span class="">CERO TELEMETRÍA / LOCAL FIRST</span>
+        </div>
+      </div>
+      <div class="planner-card p-8 flex flex-col justify-between shadow-botanical-sm group">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-[#E2EAE0] border border-[#CAD5C6] flex items-center justify-center text-[#24422E] mb-6 group-hover:bg-[#24422E] group-hover:text-[#FAF8F5] transition-all">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          </div>
+          <h3 class="text-xl font-bold font-display text-[#1C3323] mb-3">Súper Ligero</h3>
+          <p class="text-[#47574B] text-sm leading-relaxed">
+            Desarrollado en Swift para macOS. No hay contadores acumulados; cerrar o abrir la app no desincroniza nada. Consumo imperceptible de batería.
+          </p>
+        </div>
+        <div class="mt-8 pt-4 border-t border-[#E7ECE4] flex items-center text-xs font-mono font-bold text-[#24422E]">
+          <span class="">OPTIMIZADO PARA MAC</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. SECCIÓN "CÓMO UTILIZARLO" -->
+  <section class="max-w-7xl mx-auto px-6 py-20 border-t border-[#CAD5C6]" id="como-utilizarlo">
+    <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+      <div class="inline-flex items-center gap-2">
+        <span class="text-xs font-mono uppercase tracking-widest text-[#24422E] font-bold px-3.5 py-1.5 rounded-full bg-[#E2EAE0] border border-[#CAD5C6]">
+          Paso a Paso
+        </span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold font-display text-[#1C3323] tracking-tight">
+        Cómo utilizarlo
+      </h2>
+      <p class="text-[#47574B] text-base leading-relaxed">
+        Configuración ultra rápida en solo tres pasos. Sin registros engorrosos ni paneles complicados.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+      <div class="planner-card p-8 relative flex flex-col justify-between shadow-botanical-sm">
+        <div>
+          <div class="flex items-baseline justify-between mb-6 pb-3 border-b border-[#E7ECE4]">
+            <span class="text-5xl lg:text-6xl font-casio font-black text-[#24422E]">01</span>
+            <span class="text-xs font-mono font-bold text-[#24422E] bg-[#E2EAE0] px-2.5 py-1 rounded border border-[#CAD5C6]">.APP</span>
+          </div>
+          <h3 class="text-xl font-bold font-display text-[#1C3323] mb-3">Ejecuta la app</h3>
+          <p class="text-[#47574B] text-sm leading-relaxed">
+            Obtén el archivo <code class="text-[#24422E] bg-[#E2EAE0] px-1.5 py-0.5 rounded font-mono font-semibold">SalaryTracker.app</code>, ábrelo y verás instantáneamente el monto en tu barra de menú superior.
+          </p>
+        </div>
+        <div class="mt-8 p-3 rounded-xl bg-[#F5F3ED] border border-[#CAD5C6] font-mono text-xs text-[#2D3A30]">
+          <span class="text-[#24422E] font-bold">$</span> open SalaryTracker.app
+        </div>
+      </div>
+      <div class="planner-card p-8 relative flex flex-col justify-between shadow-botanical-sm">
+        <div>
+          <div class="flex items-baseline justify-between mb-6 pb-3 border-b border-[#E7ECE4]">
+            <span class="text-5xl lg:text-6xl font-casio font-black text-[#24422E]">02</span>
+            <span class="text-xs font-mono font-bold text-[#24422E] bg-[#E2EAE0] px-2.5 py-1 rounded border border-[#CAD5C6]">config.json</span>
+          </div>
+          <h3 class="text-xl font-bold font-display text-[#1C3323] mb-3">Configura tu sueldo</h3>
+          <p class="text-[#47574B] text-sm leading-relaxed">
+            Utiliza la interfaz de Configuración o edita el archivo <code class="text-[#24422E] bg-[#E2EAE0] px-1.5 py-0.5 rounded font-mono font-semibold">config.json</code> con el monto total de tu salario y fecha de contrato.
+          </p>
+        </div>
+        <div class="mt-8 p-3 rounded-xl bg-[#F5F3ED] border border-[#CAD5C6] font-mono text-[11px] text-[#2D3A30]">
+          <span class="text-[#24422E] font-bold">"salaryAmount":</span> 1500000,<br>
+          <span class="text-[#24422E] font-bold">"currencyCode":</span> "CLP"
+        </div>
+      </div>
+      <div class="planner-card p-8 relative flex flex-col justify-between shadow-botanical-sm">
+        <div>
+          <div class="flex items-baseline justify-between mb-6 pb-3 border-b border-[#E7ECE4]">
+            <span class="text-5xl lg:text-6xl font-casio font-black text-[#24422E]">03</span>
+            <span class="text-xs font-mono font-bold text-[#24422E] bg-[#E2EAE0] px-2.5 py-1 rounded border border-[#CAD5C6]">REGLAS</span>
+          </div>
+          <h3 class="text-xl font-bold font-display text-[#1C3323] mb-3">Define reglas de pago</h3>
+          <p class="text-[#47574B] text-sm leading-relaxed">
+            Establece cuándo te pagan (ej. el último día de la semana del mes, o un día específico) para que la app calcule tu progreso exactamente.
+          </p>
+        </div>
+        <div class="mt-8 p-3 rounded-xl bg-[#F5F3ED] border border-[#CAD5C6] font-mono text-xs text-[#2D3A30]">
+          <span class="text-[#24422E] font-bold">"paymentRule":</span> { "lastWeekdayOfMonth": ... }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. SECCIÓN "ACERCA DE AUTOCREATIVA" -->
+  <section class="max-w-7xl mx-auto px-6 py-20 border-t border-[#CAD5C6] mb-16" id="autocreativa">
+    <div class="bg-[#F5F3ED] rounded-3xl p-8 sm:p-12 lg:p-16 border-2 border-[#CAD5C6] relative overflow-hidden shadow-botanical">
+      <div class="absolute -right-20 -top-20 w-96 h-96 bg-[#CAD5C6]/40 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-7 space-y-6 text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E2EAE0] border border-[#CAD5C6] text-[#24422E] text-xs font-bold tracking-wide">
+            ESTUDIO DIGITAL
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold font-display text-[#1C3323] tracking-tight">
+            Acerca de Autocreativa
+          </h2>
+          <p class="text-base sm:text-lg text-[#3E4F42] leading-relaxed font-normal">
+            En <strong class="text-[#1C3323] font-semibold">Autocreativa</strong> creamos soluciones de software de autor y herramientas digitales que combinan utilidad con carácter. Nos apasiona rescatar conceptos tangibles del mundo físico —como la confiabilidad austera y la estética retro de los relojes digitales Casio— y trasladarlos con maestría artesanal al ecosistema nativo de macOS.
+          </p>
+          <div class="pt-2">
+            <a class="inline-flex items-center gap-2.5 text-[#24422E] hover:text-[#1C3323] font-bold text-lg group transition-colors" href="https://autocreativa.com/" rel="noopener noreferrer" target="_blank">
+              <span class="">Visitar autocreativa.com</span>
+              <svg class="w-5 h-5 group-hover:translate-x-1.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="lg:col-span-5">
+          <div class="bg-[#24422E] text-white border border-[#1C3323] rounded-2xl p-6 sm:p-8 space-y-6 shadow-botanical-lg relative">
+            <div class="space-y-2">
+              <span class="text-[11px] font-mono uppercase tracking-widest text-[#8CF59B] font-bold">DAILY COLLABORATION</span>
+              <h4 class="text-xl font-bold font-display text-[#FAF8F5]">¿Tienes una idea en mente?</h4>
+              <p class="text-xs sm:text-sm text-[#CAD5C6] leading-relaxed">
+                Creamos aplicaciones a medida, widgets de productividad e interfaces memorables. Colaboremos en tu próximo proyecto.
+              </p>
+            </div>
+            <div class="p-4 rounded-xl bg-[#172D1E] border border-[#2D5037] text-xs font-mono text-[#E2EAE0] space-y-1">
+              <div class="text-[#8CF59B] font-bold">// Envíanos un correo directo</div>
+              <div class="truncate text-white font-medium">contacto@autocreativa.com</div>
+            </div>
+            <a class="w-full block text-center py-3.5 px-6 rounded-xl bg-[#FAF8F5] hover:bg-[#E2EAE0] text-[#1C3323] font-bold text-sm tracking-wide shadow-md transition-all duration-300 transform hover:-translate-y-0.5" href="mailto:contacto@autocreativa.com">
+              Iniciar conversación
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-[#CAD5C6] bg-[#F5F3ED] py-10">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#5F7A65] font-mono">
+      <div class="flex items-center gap-2">
+        <span class="text-[#24422E] font-bold">SalaryTracker</span>
+        <span class="">— Inspirado en la precisión retro Casio.</span>
+      </div>
+      <div class="">
+        Diseñado &amp; desarrollado por <a class="text-[#24422E] font-bold hover:underline" href="https://autocreativa.com/">Autocreativa</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/main.js"></script>
+
+</body>
+</html>

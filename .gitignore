@@ -1,0 +1,33 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencias
+node_modules
+
+# Build (se sube al hosting, no al repo)
+dist
+dist-ssr
+*.local
+
+# Restos del scaffold de Vite (la landing real usa index.html en la raíz)
+src/
+
+# Export del diseño (herramienta Stitch) — referencia local, no versionada
+stitch_*/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
