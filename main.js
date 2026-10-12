@@ -14,7 +14,7 @@ import './style.css'
 
 // ── OS Detection & Download Button ──────────────────────────────────────────
 const DOWNLOADS = {
-  // download.php empaqueta y sirve el .app; el aviso por correo lo dispara el
+  // download.php sirve el instalador .dmg; el aviso por correo lo dispara el
   // frontend (Web3Forms, ver más abajo)
   mac:     { label: 'Descargar para macOS', url: '/download.php', available: true },
   windows: { label: 'No disponible para Windows', url: null, available: false },

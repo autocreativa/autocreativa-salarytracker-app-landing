@@ -18,15 +18,11 @@ dist-ssr
 # Restos del scaffold de Vite (la landing real usa index.html en la raíz)
 src/
 
-# Binarios de la app para distribuir (artefacto del build del repo de la app;
-# se suben al hosting junto con dist/, ver public/downloads/README.md)
+# Instalador de la app para distribuir (artefacto del build del repo de la app;
+# se sube al hosting junto con dist/, ver public/downloads/README.md)
+public/downloads/*.dmg
 public/downloads/*.zip
 public/downloads/*.app/
-# Zips generados al vuelo por download.php (caché del bundle)
-public/downloads/.cache/
-
-# Logs de descargas (los genera download.php en el servidor)
-logs/
 
 # Editor directories and files
 .vscode/*

@@ -10,34 +10,37 @@ que muestra en tiempo real cuánto de tu sueldo periódico ya has ganado.
 
 ## Stack
 
-Sin framework de UI ni build step obligatorio:
+Sin framework de UI propio:
 
-- HTML + Tailwind CSS vía CDN (`cdn.tailwindcss.com`) con tokens de marca en
-  `tailwind.config` (paleta `botanical`, tipografías Epilogue / Manrope /
-  Share Tech Mono / VT323).
+- HTML + **Tailwind CSS** compilado con PostCSS/Vite (`tailwind.config.js` +
+  `postcss.config.js`, entrada `tailwind.css`) con tokens de marca (paleta
+  `botanical`, tipografías Epilogue / Manrope / Share Tech Mono / VT323).
+- **Fuentes auto-alojadas** con `@fontsource/*`, importadas desde `main.js` (se
+  empaquetan en el build; sin depender de Google Fonts).
 - JavaScript ES modules sin framework (`main.js`): detección de SO para el botón
   de descarga y las tarjetas de plataforma, resalte del SO detectado y un
-  contador "vivo" de demonstration (saldo, barra de Menu Bar y progreso) que
+  contador "vivo" de demostración (saldo, barra de Menu Bar y progreso) que
   corre a 10 ticks/s.
-- Google Fonts por CDN.
 
 ## Estructura
 
 ```
 .
-├── index.html          # página completa (hero, features, cómo usarlo, Autocreativa, footer)
-├── main.js             # lógica: detección de SO, botón de descarga, contador vivo de demo (10 ticks/s)
-├── style.css           # estilos propios (los que Tailwind no cubre)
-├── public/             # favicon.svg, icons.svg, download.php, downloads/ (la app)
-├── package.json        # solo para vite (dev server + build → dist/)
-└── dist/               # build de despliegue (ignorado por git)
+├── index.html            # página completa (hero, features, cómo usarlo, Autocreativa, footer)
+├── main.js               # lógica: detección de SO, botón de descarga, contador vivo de demo (10 ticks/s)
+├── style.css             # estilos propios (los que Tailwind no cubre)
+├── tailwind.css          # directivas @tailwind (entrada del CSS compilado)
+├── tailwind.config.js    # tokens de marca (paleta botanical, tipografías)
+├── postcss.config.js     # pipeline Tailwind + autoprefixer
+├── public/               # icons.svg, favicons, site.webmanifest, download.php, downloads/ (la app)
+├── package.json          # vite (dev server + build → dist/)
+└── dist/                 # build de despliegue (ignorado por git)
 ```
 
 `public/download.php` + `public/downloads/` se copian solos al build (vite copia
 todo `public/` a la raíz de `dist/`): el botón de descarga Mac sirve el
-`SalaryTracker.app`, que `download.php` empaqueta **al vuelo** en un zip
-(porque un `.app` es un directorio y no se puede descargar directo). El aviso
-por correo de cada descarga es **100 % frontend** (`main.js` → Web3Forms), sin
+instalador **`SalaryTracker-1.0.0.dmg`** alojado en `downloads/`. El aviso por
+correo de cada descarga es **100 % frontend** (`main.js` → Web3Forms), sin
 backend. Ver `public/downloads/README.md`.
 
 `src/` es un resto del scaffold de Vite (demo del contador) y **no** se usa:
@@ -64,14 +67,10 @@ npm run preview
 ## Configuración rápida
 
 - **Botón de descarga:** objeto `DOWNLOADS` al inicio de `main.js`. En macOS
-  apunta a `/download.php`, que empaqueta al vuelo `public/downloads/SalaryTracker.app`
-  en un zip y lo sirve con el nombre `SalaryTracker.app`. El endpoint solo sirve
-  el archivo; no envía correos (constantes `APP_BUNDLE` / `DOWNLOAD_NAME` en
-  `public/download.php`).
-  - Nota: un `.app` es un directorio; el archivo servido es en realidad un zip
-    con extensión `.app`. Safari lo expande solo; en Chrome/Firefox hay que
-    renombrarlo a `.zip` para abrirlo (para máxima compatibilidad, usar
-    `SalaryTracker.app.zip` o un `.dmg`).
+  apunta a `/download.php`, que sirve el instalador `.dmg` de
+  `public/downloads/SalaryTracker-<versión>.dmg`. El endpoint solo sirve el
+  archivo; no envía correos (constantes `APP_VERSION` / `DOWNLOAD_NAME` en
+  `public/download.php`; mantén `APP_VERSION` de `main.js` en sync).
 - **Aviso por correo de descargas (sin backend):** al pulsar "Descargar para
   macOS", `main.js` hace un POST a **Web3Forms** con los datos de contexto. Crea
   una `access_key` gratis en <https://web3forms.com> (te llega por correo) y
@@ -87,13 +86,12 @@ npm run preview
 1. `npm run build` → `dist/` (incluye `download.php` y `downloads/` copiados de `public/`).
 2. Subir el **contenido** de `dist/` al hosting (incluye `.htaccess`, `php.ini`,
    `.user.ini`, `cgi-bin/`, `.well-known/`, `download.php` y `downloads/`).
-3. Asegurar que la carpeta `downloads/` exista en el hosting y sea escribible
-   por PHP para cachear el zip generado desde el `.app` (`downloads/.cache/`).
-   Si no hay permiso de escritura, usa el directorio temporal del sistema.
+3. Comprueba que `downloads/SalaryTracker-<versión>.dmg` esté subido: el `.dmg`
+   **no** se versiona en git (es un artefacto del build del repo de la app).
 4. Verificar en móvil y escritorio: el diseño es responsive (`lg:` breakpoints).
 
 ## No versionado
 
-`node_modules/`, `dist/`, `src/` (restos de Vite), los binarios de la app
-(`public/downloads/*.app/`, `*.zip` y `.cache/`), `logs/`, `stitch_*/` (export
+`node_modules/`, `dist/`, `src/` (restos de Vite), el instalador de la app
+(`public/downloads/*.dmg`, `*.zip`, `*.app/`), `logs/`, `stitch_*/` (export
 del diseño) y `.DS_Store`. Ver `.gitignore`.
