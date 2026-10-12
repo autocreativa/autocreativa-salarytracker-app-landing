@@ -1,0 +1,6 @@
+/* Tailwind compilado localmente (sin CDN).
+   Se carga DESPUÉS de /style.css para replicar el mismo orden de cascada
+   que tenía el Play CDN inyectado al final del <head>. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

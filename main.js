@@ -1,8 +1,22 @@
+// Fuentes auto-alojadas (sin depender de fonts.googleapis.com)
+import '@fontsource/manrope/400.css'
+import '@fontsource/manrope/500.css'
+import '@fontsource/manrope/600.css'
+import '@fontsource/manrope/700.css'
+import '@fontsource/epilogue/500.css'
+import '@fontsource/epilogue/600.css'
+import '@fontsource/epilogue/700.css'
+import '@fontsource/epilogue/800.css'
+import '@fontsource/share-tech-mono/400.css'
+import '@fontsource/vt323/400.css'
+
 import './style.css'
 
 // ── OS Detection & Download Button ──────────────────────────────────────────
 const DOWNLOADS = {
-  mac:     { label: 'Descargar para macOS', url: '#', available: true },
+  // download.php empaqueta y sirve el .app; el aviso por correo lo dispara el
+  // frontend (Web3Forms, ver más abajo)
+  mac:     { label: 'Descargar para macOS', url: '/download.php', available: true },
   windows: { label: 'No disponible para Windows', url: null, available: false },
   linux:   { label: 'No disponible para Linux',   url: null, available: false },
   other:   { label: 'Descargar',                  url: null, available: false },
@@ -10,6 +24,61 @@ const DOWNLOADS = {
 
 // URL donde el usuario puede ver todas las versiones / releases
 const OTHER_OS_URL = 'https://autocreativa.com/'
+
+// Versión mostrada en el aviso de descarga (mantener en sync con APP_VERSION de public/download.php)
+const APP_VERSION = '1.0.0'
+
+// ── Aviso por correo de cada descarga (frontend, SIN backend) ───────────────
+// Web3Forms: crea una access_key gratis en https://web3forms.com y pégala abajo.
+// El correo llega a la dirección con la que registraste la key (no se expone tu
+// email en la web). La access_key es pública y segura en el cliente.
+const WEB3FORMS_ACCESS_KEY = '553fe6c4-9a1b-4ee2-8584-d8167e70bf16'
+const WEB3FORMS_ENDPOINT   = 'https://api.web3forms.com/submit'
+const NOTIFY_COOLDOWN_MS   = 4000 // evita avisos duplicados por doble clic
+
+let lastNotifyAt = 0
+
+async function notifyDownload() {
+  if (!WEB3FORMS_ACCESS_KEY || WEB3FORMS_ACCESS_KEY === 'PEGA_AQUI_TU_ACCESS_KEY') {
+    console.warn('[descarga] Configura WEB3FORMS_ACCESS_KEY para recibir avisos por correo.')
+    return
+  }
+
+  const now = Date.now()
+  if (now - lastNotifyAt < NOTIFY_COOLDOWN_MS) return
+  lastNotifyAt = now
+
+  const payload = {
+    access_key: WEB3FORMS_ACCESS_KEY,
+    subject: 'SalaryTracker — Nueva descarga de la app',
+    from_name: 'Landing SalaryTracker',
+    botcheck: false,
+    evento: 'descarga-app',
+    plataforma: 'macOS',
+    version: APP_VERSION,
+    pagina: location.href,
+    referer: document.referrer || '(directo)',
+    idioma: navigator.language,
+    pantalla: `${window.screen.width}x${window.screen.height}`,
+    zona_horaria: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    fecha: new Date().toISOString(),
+  }
+
+  try {
+    const res = await fetch(WEB3FORMS_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload),
+      keepalive: true,
+    })
+    const json = await res.json().catch(() => ({}))
+    if (!res.ok || json.success === false) {
+      console.warn('[descarga] Web3Forms no aceptó el aviso:', res.status, json.message || '')
+    }
+  } catch (err) {
+    console.warn('[descarga] No se pudo enviar el aviso por correo:', err)
+  }
+}
 
 function detectOS() {
   const ua = navigator.userAgent
@@ -33,6 +102,8 @@ function initDownloadButton() {
 
   if (info.available && info.url) {
     btn.href = info.url
+    // Avisa por correo (frontend) cuando el usuario descarga; no interfiere con la descarga.
+    btn.addEventListener('click', () => { void notifyDownload() })
   } else {
     btn.href = '#'
     btn.classList.add('opacity-50', 'cursor-not-allowed')
